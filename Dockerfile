@@ -1,6 +1,6 @@
-FROM odoo:16.0
+FROM odoo:14.0
 
-LABEL MAINTAINER Marlon Falcon <mfalconsoft@gmail.com>
+LABEL MAINTAINER Pau Gallego <paugf2004@gmail.com>
 USER root
 
 WORKDIR /odoo_app
