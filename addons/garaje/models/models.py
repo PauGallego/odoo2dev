@@ -1,29 +1,10 @@
-# -*- coding: utf-8 -*-
-
-# from odoo import models, fields, api
-
-
-# class garaje(models.Model):
-#     _name = 'garaje.garaje'
-#     _description = 'garaje.garaje'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
-
-
+#Imports
 from odoo import models, fields, api
 from dateutil.relativedelta import *
 from datetime import date
 
 
-#Definimos clase aparcamiento
+#Definimos modelo aparcamiento
 class aparcamiento(models.Model):
 
     #Nombre objeto y descripciones
@@ -37,11 +18,15 @@ class aparcamiento(models.Model):
     #Relacion entre tablas
     coche_ids = fields.One2many('garaje.coche', 'aparcamiento_id', string='Lista Coches')
 
+#Definimos modelo coche
 class coche(models.Model):
+
+    #Nombre objeto y descripciones
     _name = 'garaje.coche'
     _description = 'Permite definir las caracteristicas de un coche'
     _order = 'name'
 
+    #Valores de la tabla
     name = fields.Char(string='Matricula', required = True, size = 7)
     modelo = fields.Char(string='Modelo', required = True) 
     construido = fields.Date(string='Fecha de contrucción')
@@ -50,16 +35,20 @@ class coche(models.Model):
     descripcion = fields.Text('Descripcion')
     averiado = fields.Boolean(string='Averiado', default=False)
 
+    #Relacion entre tablas
     aparcamiento_id = fields.Many2one('garaje.aparcamiento', string='Aparcamiento')
     mantenimiento_ids = fields.Many2many('garaje.mantenimiento',string='Mantenimientos')
 
 
+    #Metodo calcular años
     @api.depends('construido')
     def _get_anios (self):
         for coche in self:
             hoy = date.today()
             coche.anios= relativedelta(hoy, coche.construido).years
-    
+
+
+#Definimos modelo mantenimiento
 class mantenimiento(models.Model):
     _name = 'garaje.mantenimiento'
     _description = 'Permite definir las caracteristicas de un coche'
@@ -70,4 +59,5 @@ class mantenimiento(models.Model):
     tipo = fields.Selection(string='Tipo', selection=[('l','lavar'),('r','revision'),('m','mecanica'),('p','pintura')], default = 'l')
     coste = fields.Float('Coste', (8,2), help='Coste total del mantenimiento')
 
+    #Relacion entre tablas
     coche_ids = fields.Many2many('garaje.coche', string='Coches')

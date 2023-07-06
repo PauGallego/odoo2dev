@@ -8,12 +8,14 @@
         <field name="sequence">100</field>
     </record>
 
+    <!-- Definimos Usuario estandard-->
     <record model="res.groups" id="group_garaje_usuario">
         <field name="name">Usuario</field>
         <field name="category_id" ref="garaje.module_category_garaje"/>
         <field name="comment">Usuarios que gestionan coches y mantenimientos</field>
     </record>
 
+    <!-- Definimos Usuario Director-->
     <record model="res.groups" id="group_garaje_director">
         <field name="name">Director</field>
         <field name="category_id" ref="garaje.module_category_garaje"/>
