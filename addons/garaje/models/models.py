@@ -19,6 +19,8 @@
 
 
 from odoo import models, fields, api
+from dateutil.relativedelta import *
+from datetime import date
 
 
 #Definimos clase aparcamiento
@@ -46,6 +48,7 @@ class coche(models.Model):
     consumo = fields.Float('Consumo', (4,1), default=0.0)
     anios = fields.Integer('Años', compute='_get_anios' )
     descripcion = fields.Text('Descripcion')
+    averiado = fields.Boolean(string='Averiado', default=False)
 
     aparcamiento_id = fields.Many2one('garaje.aparcamiento', string='Aparcamiento')
     mantenimiento_ids = fields.Many2many('garaje.mantenimiento',string='Mantenimientos')
@@ -54,7 +57,8 @@ class coche(models.Model):
     @api.depends('construido')
     def _get_anios (self):
         for coche in self:
-            coche.anios= 0
+            hoy = date.today()
+            coche.anios= relativedelta(hoy, coche.construido).years
     
 class mantenimiento(models.Model):
     _name = 'garaje.mantenimiento'
