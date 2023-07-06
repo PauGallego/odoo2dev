@@ -81,6 +81,7 @@
                 <field name="anios"/>
                 <field name="averiado"/>
                 <field name="aparcamiento_id"/>     
+                <field name="descripcion"/> 
               </group>
             </group>
 
